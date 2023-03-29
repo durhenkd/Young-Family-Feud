@@ -1,17 +1,17 @@
-# YOUNG ADULT FEUD
+# Young Adult Feud
 
-This a almost-copy of the family feud game that is meant to be played in the browser.
+This a almost-copy of the popular show "Family Feud" that is meant to be played in the browser.
 
 ## Install
 
-The "game" does not yet have a release, so in order to install and run it just clone the repository:
+This "game" does not yet have a release, so in order to install and run it just clone the repository:
 ```
 git clone https://github.com/durhenkd/Young-Family-Feud
 cd Young-Family-Feud
 ```
 
-The make sure you have npm installed:
-- For Windows go to the [Node.js page](https://nodejs.org/en/download) and install the appropriate windoes version. It will also install `npm` for you.
+Then make sure you have npm installed:
+- For Windows go to the [Node.js page](https://nodejs.org/en/download) and install the appropriate version. It should also install `npm` for you.
 - For Arch-based Linux distros (like Manjaro): 
   ```
   $ sudo pacman -Syu nvm
@@ -25,15 +25,14 @@ The make sure you have npm installed:
   $ sudo apt install Node.js
   $ sudo apt install npm
   ```
-  The check for correct installation: ` $ Node.js -v && npm --version `
+  Then check for correct installation: ` $ Node.js -v && npm --version `
 
 ## Run the game
 
-After you installed all the prerequisites just type the following command to install all the dependencies:
+After you installed all the prerequisites just type the following command while in the cloned folder to install all the dependencies (It is only neccessary to be executed once):
 ```
 $ npm install
 ```
-It is only neccessary to be executed once.
 
 Then to actually run the game:
 
