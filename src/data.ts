@@ -32,8 +32,6 @@ export function get_game(): Question[] {
         { body: "Burta/Greutatea", points: 12 }, 
         { body: "Unghiile", points: 7 }, 
         { body: "Datoriile", points: 4 }, 
-        { body: "empty", points: 0 }, 
-        { body: "empty", points: 0 },
       ],
     },
     {
@@ -46,7 +44,6 @@ export function get_game(): Question[] {
         { body: "Roata", points: 10 }, 
         { body: "Piulita", points: 5 }, 
         { body: "Toaleta", points: 4 }, 
-        { body: "empty", points: 0 },
       ],
     },
     {
@@ -72,7 +69,6 @@ export function get_game(): Question[] {
         { body: "Petrecerea burlacilor", points: 18 }, 
         { body: "Casa bantuita", points: 14 }, 
         { body: "Pescuit", points: 8 }, 
-        { body: "empty", points: 0 },
       ],
     },
     {

@@ -5,6 +5,10 @@ import useSound from 'use-sound';
 import buzzerSFX from "../sounds/buzzer.mp3";
 import dingSFX from "../sounds/ding.mp3";
 
+const answerColumnStyling = 'flex flex-col w-1/2 gap-5'
+const showAnswerStyling = "text-5xl text-center w-full p-10 rounded-2xl shadow-xl";
+const hiddenAnswerStyling = "text-5xl font-black text-center w-full p-10 rounded-2xl bg-gray-200";
+
 function App() {
   const [r, refresh] = useState(false);
   const rRef = useRef(r);
@@ -31,6 +35,8 @@ function App() {
   const answer7Visibility = useRef(false);
   const answer8Visibility = useRef(false);
 
+  const questionVisibility = useRef(false);
+
   const [playBuzzer] = useSound(buzzerSFX);
   const [playDing] = useSound(dingSFX);
 
@@ -51,6 +57,9 @@ function App() {
 
   const showAnswer = (nr:number) : boolean =>  {
 
+    if (nr > questions[questionIndex.current].answers.length) 
+      return false;
+
     switch(nr) {
       case 1: if(answer1Visibility.current == true) return false; playDing(); answer1Visibility.current = true; return true;
       case 2: if(answer2Visibility.current == true) return false; playDing(); answer2Visibility.current = true; return true;
@@ -65,13 +74,14 @@ function App() {
     return false;
   }
 
-  const modify_x = (leftTeam: boolean, delta: number) =>{
+  const setQuestionVisibility = (value: boolean) => {
+    questionVisibility.current = value;
+  }
 
+  const modify_x = (leftTeam: boolean, delta: number) =>{
     if (delta >= 0.0) {
       playBuzzer();
     }
-     
-
     if (leftTeam) {
       leftTeamX.current = Math.min(3, Math.max(0,leftTeamX.current + delta));
     } else {
@@ -104,6 +114,8 @@ function App() {
     answer6Visibility.current = (false);
     answer7Visibility.current = (false);
     answer8Visibility.current = (false);
+
+    questionVisibility.current = (true);
   }
 
   const handleKeyDown = (ev: globalThis.KeyboardEvent) => {
@@ -133,6 +145,8 @@ function App() {
       case 'v': modify_x(false, 1); break;
       case ',': resetRound(true); break;
       case '.': resetRound(false); break;
+      case 's': setQuestionVisibility(true); break;
+      case 'h': setQuestionVisibility(false); break;
     }
 
     rRef.current = !rRef.current;
@@ -140,7 +154,6 @@ function App() {
   }
 
   useEffect(() => {
-
     document.addEventListener("keydown", handleKeyDown, false);
 
     return () => {
@@ -175,45 +188,55 @@ function App() {
       <div className={`self-center w-full h-full transition-all p-10 text-center flex flex-col gap-10 ${hideWelcome && !showWinner.current ? "" : "hidden"}`}>
         <div className='flex flex-row'>
           <h1 className='text-5xl text-center w-1/3'>{leftTeamName}: <i className='font-black'>{leftTeamScore.current}</i><br/><p className='font-bold text-red-600' >{"X".repeat(leftTeamX.current)}</p></h1>
-          <h1 className='text-3xl w-1/3 text-center'>Runda Curenta<br/> <i className='font-black'>{roundScore.current}</i></h1>
+          <h1 className='text-3xl w-1/3 text-center'>{`Runda Nr. ${questionIndex.current + 1}`}<br/> <i className='font-black'>{roundScore.current}</i></h1>
           <h1 className='text-5xl text-center w-1/3'>{rightTeamName}: <i className='font-black'>{rightTeamScore.current}</i><br/><p className='font-bold text-red-600'>{"X".repeat(rightTeamX.current)}</p></h1>
         </div>
-        <div className='w-full h-full flex justify-center items-center'><h1 className='text-6xl text-center font-bold '>{questions[questionIndex.current].body}</h1></div>
+        <div className='w-full h-full flex justify-center items-center'>
+            <h1 className='text-6xl text-center font-bold '>{
+             questionVisibility.current ?
+             questions[questionIndex.current].body
+             : "-"
+            }</h1> 
+        </div>
         <div className='flex flex-row gap-20'>
-          <div className='flex flex-col w-1/2 gap-5'>
+          <div className={answerColumnStyling}>
               { answer1Visibility.current ? 
-                <h1 className='text-5xl text-center w-full p-10 rounded-2xl shadow-xl'>{questions[questionIndex.current].answers[0].body}: <i className='font-bold'>{questions[questionIndex.current].answers[0].points}</i></h1> 
-                : <div className='text-5xl font-black text-center w-full p-10 rounded-2xl bg-gray-200' >1</div>
+                <h1 className={showAnswerStyling}>{questions[questionIndex.current].answers[0].body}: <i className='font-bold'>{questions[questionIndex.current].answers[0].points}</i></h1> 
+                : <div className={hiddenAnswerStyling} >1</div>
               }
               { answer2Visibility.current ? 
-                <h1 className='text-5xl text-center w-full p-10 rounded-2xl shadow-xl'>{questions[questionIndex.current].answers[1].body}: <i className='font-bold'>{questions[questionIndex.current].answers[1].points}</i></h1> 
-                : <div className='text-5xl font-black text-center w-full p-10 rounded-2xl  bg-gray-200' >2</div>
+                <h1 className={showAnswerStyling}>{questions[questionIndex.current].answers[1].body}: <i className='font-bold'>{questions[questionIndex.current].answers[1].points}</i></h1> 
+                : <div className={hiddenAnswerStyling} >2</div>
               }
               { answer3Visibility.current ? 
-                <h1 className='text-5xl text-center w-full p-10 rounded-2xl shadow-xl'>{questions[questionIndex.current].answers[2].body}: <i className='font-bold'>{questions[questionIndex.current].answers[2].points}</i></h1> 
-                : <div className='text-5xl font-black text-center w-full p-10 rounded-2xl bg-gray-200' >3</div>
+                <h1 className={showAnswerStyling}>{questions[questionIndex.current].answers[2].body}: <i className='font-bold'>{questions[questionIndex.current].answers[2].points}</i></h1> 
+                : <div className={hiddenAnswerStyling} >3</div>
               }
               { answer4Visibility.current ? 
-                <h1 className='text-5xl text-center w-full p-10 rounded-2xl shadow-xl'>{questions[questionIndex.current].answers[3].body}: <i className='font-bold'>{questions[questionIndex.current].answers[3].points}</i></h1> 
-                : <div className='text-5xl font-black text-center w-full p-10 rounded-2xl  bg-gray-200' >4</div>
+                <h1 className={showAnswerStyling}>{questions[questionIndex.current].answers[3].body}: <i className='font-bold'>{questions[questionIndex.current].answers[3].points}</i></h1> 
+                : <div className={hiddenAnswerStyling} >4</div>
               }
             </div>
-            <div className='flex flex-col h-full w-1/2 gap-5'>
-              { answer5Visibility.current ? 
-                <h1 className='text-5xl text-center w-full p-10 rounded-2xl shadow-xl'>{questions[questionIndex.current].answers[4].body}: <i className='font-bold'>{questions[questionIndex.current].answers[4].points}</i></h1> 
-                : <div className='text-5xl font-black text-center w-full p-10 rounded-2xl  bg-gray-200 grow' >5</div>
+            <div className={answerColumnStyling}>
+              { questions[questionIndex.current].answers.length < 5 ? <></> :
+                answer5Visibility.current ? 
+                <h1 className={showAnswerStyling}>{questions[questionIndex.current].answers[4].body}: <i className='font-bold'>{questions[questionIndex.current].answers[4].points}</i></h1> 
+                : <div className={hiddenAnswerStyling}>5</div>
               }
-              { answer6Visibility.current ? 
-                <h1 className='text-5xl text-center w-full p-10 rounded-2xl shadow-xl'>{questions[questionIndex.current].answers[5].body}: <i className='font-bold'>{questions[questionIndex.current].answers[5].points}</i></h1> 
-                : <div className='text-5xl font-black text-center w-full p-10 rounded-2xl bg-gray-200' >6</div>
+              { questions[questionIndex.current].answers.length < 6 ? <></> :
+                answer6Visibility.current ? 
+                <h1 className={showAnswerStyling}>{questions[questionIndex.current].answers[5].body}: <i className='font-bold'>{questions[questionIndex.current].answers[5].points}</i></h1> 
+                : <div className={hiddenAnswerStyling} >6</div>
               }
-              { answer7Visibility.current ? 
-                <h1 className='text-5xl text-center w-full p-10 rounded-2xl shadow-xl'>{questions[questionIndex.current].answers[6].body}: <i className='font-bold'>{questions[questionIndex.current].answers[6].points}</i></h1> 
-                : <div className='text-5xl font-black text-center w-full p-10 rounded-2xl  bg-gray-200' >7</div>
+              { questions[questionIndex.current].answers.length < 7 ? <></> : 
+                answer7Visibility.current ? 
+                <h1 className={showAnswerStyling}>{questions[questionIndex.current].answers[6].body}: <i className='font-bold'>{questions[questionIndex.current].answers[6].points}</i></h1> 
+                : <div className={hiddenAnswerStyling} >7</div>
               }
-              { answer8Visibility.current ? 
-                <h1 className='text-5xl text-center w-full p-10 rounded-2xl shadow-xl'>{questions[questionIndex.current].answers[7].body}: <i className='font-bold'>{questions[questionIndex.current].answers[7].points}</i></h1> 
-                : <div className='text-5xl font-black text-center w-full p-10 rounded-2xl bg-gray-200' >8</div>
+              { questions[questionIndex.current].answers.length < 8 ? <></> : 
+                answer8Visibility.current ? 
+                <h1 className={showAnswerStyling}>{questions[questionIndex.current].answers[7].body}: <i className='font-bold'>{questions[questionIndex.current].answers[7].points}</i></h1> 
+                : <div className={hiddenAnswerStyling} >8</div>
               }
             </div>
           
@@ -221,7 +244,7 @@ function App() {
       </div>
      
       <div className={`w-full h-full flex justify-center items-center  ${showWinner.current ? "" : "hidden"}`}>
-      <h1 className='text-8xl grow text-center'>and the winner is...<br/><i className='font-black'>{leftTeamScore.current > rightTeamScore.current ? leftTeamName : rightTeamName}</i></h1>
+        <h1 className='text-8xl grow text-center'>and the winner is...<br/><i className='font-black'>{leftTeamScore.current > rightTeamScore.current ? leftTeamName : rightTeamName}</i></h1>
       </div>
       
     </div>
