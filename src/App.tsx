@@ -5,9 +5,17 @@ import useSound from 'use-sound';
 import buzzerSFX from "../sounds/buzzer.mp3";
 import dingSFX from "../sounds/ding.mp3";
 
-const answerColumnStyling = 'flex flex-col w-1/2 gap-5'
-const showAnswerStyling = "text-5xl text-center w-full p-10 rounded-2xl shadow-xl";
-const hiddenAnswerStyling = "text-5xl font-black text-center w-full p-10 rounded-2xl bg-gray-200";
+const scoreTeamStyle = 'text-5xl text-center w-1/3'
+const scoreRoundStyle = 'text-3xl w-1/3 text-center'
+const xStyle = 'font-bold text-red-600'
+
+const questionDivStyle = 'w-full p-10 flex justify-center items-center'
+const questionStyle = 'text-6xl text-center font-bold'
+
+const answerDivStyle = 'flex flex-row gap-20 h-full'
+const answerColumnStyle = 'flex flex-col w-1/2 gap-5'
+const showAnswerStyle = "text-5xl text-center w-full p-5 rounded-2xl shadow-xl grow flex items-center justify-center";
+const hiddenAnswerStyle = "text-5xl font-black text-center w-full p-5 rounded-2xl bg-gray-200 grow flex items-center justify-center";
 
 function App() {
   const [r, refresh] = useState(false);
@@ -115,7 +123,7 @@ function App() {
     answer7Visibility.current = (false);
     answer8Visibility.current = (false);
 
-    questionVisibility.current = (true);
+    questionVisibility.current = (false);
   }
 
   const handleKeyDown = (ev: globalThis.KeyboardEvent) => {
@@ -187,56 +195,56 @@ function App() {
 
       <div className={`self-center w-full h-full transition-all p-10 text-center flex flex-col gap-10 ${hideWelcome && !showWinner.current ? "" : "hidden"}`}>
         <div className='flex flex-row'>
-          <h1 className='text-5xl text-center w-1/3'>{leftTeamName}: <i className='font-black'>{leftTeamScore.current}</i><br/><p className='font-bold text-red-600' >{"X".repeat(leftTeamX.current)}</p></h1>
-          <h1 className='text-3xl w-1/3 text-center'>{`Runda Nr. ${questionIndex.current + 1}`}<br/> <i className='font-black'>{roundScore.current}</i></h1>
-          <h1 className='text-5xl text-center w-1/3'>{rightTeamName}: <i className='font-black'>{rightTeamScore.current}</i><br/><p className='font-bold text-red-600'>{"X".repeat(rightTeamX.current)}</p></h1>
+          <h1 className={scoreTeamStyle}>{leftTeamName}: <i className='font-black'>{leftTeamScore.current}</i><br/><p className={xStyle} >{"X".repeat(leftTeamX.current)}</p></h1>
+          <h1 className={scoreRoundStyle}>{`Runda Nr. ${questionIndex.current + 1}`}<br/> <i className='font-black'>{roundScore.current}</i></h1>
+          <h1 className={scoreTeamStyle}>{rightTeamName}: <i className='font-black'>{rightTeamScore.current}</i><br/><p className={xStyle}>{"X".repeat(rightTeamX.current)}</p></h1>
         </div>
-        <div className='w-full h-full flex justify-center items-center'>
-            <h1 className='text-6xl text-center font-bold '>{
+        <div className={questionDivStyle}>
+            <h1 className={questionStyle}>{
              questionVisibility.current ?
              questions[questionIndex.current].body
              : "-"
             }</h1> 
         </div>
-        <div className='flex flex-row gap-20'>
-          <div className={answerColumnStyling}>
+        <div className={answerDivStyle}>
+          <div className={answerColumnStyle}>
               { answer1Visibility.current ? 
-                <h1 className={showAnswerStyling}>{questions[questionIndex.current].answers[0].body}: <i className='font-bold'>{questions[questionIndex.current].answers[0].points}</i></h1> 
-                : <div className={hiddenAnswerStyling} >1</div>
+                <h1 className={showAnswerStyle}>{questions[questionIndex.current].answers[0].body}: <i className='font-bold'>{questions[questionIndex.current].answers[0].points}</i></h1> 
+                : <div className={hiddenAnswerStyle} >1</div>
               }
               { answer2Visibility.current ? 
-                <h1 className={showAnswerStyling}>{questions[questionIndex.current].answers[1].body}: <i className='font-bold'>{questions[questionIndex.current].answers[1].points}</i></h1> 
-                : <div className={hiddenAnswerStyling} >2</div>
+                <h1 className={showAnswerStyle}>{questions[questionIndex.current].answers[1].body}: <i className='font-bold'>{questions[questionIndex.current].answers[1].points}</i></h1> 
+                : <div className={hiddenAnswerStyle} >2</div>
               }
               { answer3Visibility.current ? 
-                <h1 className={showAnswerStyling}>{questions[questionIndex.current].answers[2].body}: <i className='font-bold'>{questions[questionIndex.current].answers[2].points}</i></h1> 
-                : <div className={hiddenAnswerStyling} >3</div>
+                <h1 className={showAnswerStyle}>{questions[questionIndex.current].answers[2].body}: <i className='font-bold'>{questions[questionIndex.current].answers[2].points}</i></h1> 
+                : <div className={hiddenAnswerStyle} >3</div>
               }
               { answer4Visibility.current ? 
-                <h1 className={showAnswerStyling}>{questions[questionIndex.current].answers[3].body}: <i className='font-bold'>{questions[questionIndex.current].answers[3].points}</i></h1> 
-                : <div className={hiddenAnswerStyling} >4</div>
+                <h1 className={showAnswerStyle}>{questions[questionIndex.current].answers[3].body}: <i className='font-bold'>{questions[questionIndex.current].answers[3].points}</i></h1> 
+                : <div className={hiddenAnswerStyle} >4</div>
               }
             </div>
-            <div className={answerColumnStyling}>
+            <div className={answerColumnStyle}>
               { questions[questionIndex.current].answers.length < 5 ? <></> :
                 answer5Visibility.current ? 
-                <h1 className={showAnswerStyling}>{questions[questionIndex.current].answers[4].body}: <i className='font-bold'>{questions[questionIndex.current].answers[4].points}</i></h1> 
-                : <div className={hiddenAnswerStyling}>5</div>
+                <h1 className={showAnswerStyle}>{questions[questionIndex.current].answers[4].body}: <i className='font-bold'>{questions[questionIndex.current].answers[4].points}</i></h1> 
+                : <div className={hiddenAnswerStyle}>5</div>
               }
               { questions[questionIndex.current].answers.length < 6 ? <></> :
                 answer6Visibility.current ? 
-                <h1 className={showAnswerStyling}>{questions[questionIndex.current].answers[5].body}: <i className='font-bold'>{questions[questionIndex.current].answers[5].points}</i></h1> 
-                : <div className={hiddenAnswerStyling} >6</div>
+                <h1 className={showAnswerStyle}>{questions[questionIndex.current].answers[5].body}: <i className='font-bold'>{questions[questionIndex.current].answers[5].points}</i></h1> 
+                : <div className={hiddenAnswerStyle} >6</div>
               }
               { questions[questionIndex.current].answers.length < 7 ? <></> : 
                 answer7Visibility.current ? 
-                <h1 className={showAnswerStyling}>{questions[questionIndex.current].answers[6].body}: <i className='font-bold'>{questions[questionIndex.current].answers[6].points}</i></h1> 
-                : <div className={hiddenAnswerStyling} >7</div>
+                <h1 className={showAnswerStyle}>{questions[questionIndex.current].answers[6].body}: <i className='font-bold'>{questions[questionIndex.current].answers[6].points}</i></h1> 
+                : <div className={hiddenAnswerStyle} >7</div>
               }
               { questions[questionIndex.current].answers.length < 8 ? <></> : 
                 answer8Visibility.current ? 
-                <h1 className={showAnswerStyling}>{questions[questionIndex.current].answers[7].body}: <i className='font-bold'>{questions[questionIndex.current].answers[7].points}</i></h1> 
-                : <div className={hiddenAnswerStyling} >8</div>
+                <h1 className={showAnswerStyle}>{questions[questionIndex.current].answers[7].body}: <i className='font-bold'>{questions[questionIndex.current].answers[7].points}</i></h1> 
+                : <div className={hiddenAnswerStyle} >8</div>
               }
             </div>
           
