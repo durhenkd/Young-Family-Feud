@@ -12,9 +12,10 @@ const welcomeInputStyle = 'input input-lg grow rounded-xl text-center placeholde
  
 const scoreDivStyle = 'flex flex-row text-[#02034d]'
 const teamDivStyle = 'flex w-1/3 flex-col gap-2'
-const scoreTeamStyle = 'text-5xl text-center '
+const scoreTeamStyle = 'text-5xl text-center'
 const scoreRoundStyle = 'text-3xl w-1/3 text-center'
 const xStyle = 'text-2xl font-bold text-red-600 border-red-600 border-4 rounded-xl m-1 px-2'
+const discussFlagStyle = 'text-3xl text bg-[#00b4d8] text-white rounded-xl m-4 p-2 font-thin'
 
 const questionDivStyle = 'w-full p-10 flex justify-center items-center'
 const questionStyle = 'text-[#02034d] text-6xl text-center font-bold'
@@ -200,11 +201,17 @@ function App() {
         </div>
       </div>
 
-      <div className={`self-center w-full h-full transition-all p-10 text-center flex flex-col gap-4 ${hideWelcome && !showWinner.current ? "" : "hidden"}`}>
+      <div className={`self-center w-full h-full transition-all p-14 text-center flex flex-col gap-5 ${hideWelcome && !showWinner.current ? "" : "hidden"}`}>
         <div className={scoreDivStyle}>
-          <div className={teamDivStyle}><h1 className={scoreTeamStyle}>{leftTeamName}: <i className='font-black'>{leftTeamScore.current}</i></h1><div className='flex flex-row justify-center'>{ Array.from({ length: leftTeamX.current }, (_, i) => <span className={xStyle} >X</span>) }</div></div>
+          <div className={teamDivStyle}>
+            <h1 className={scoreTeamStyle}>{leftTeamName}: <i className='font-black'>{leftTeamScore.current}</i>{ rightTeamX.current == 2 ? <i className={discussFlagStyle}>sfătuiți-vă!</i> : ""}</h1>
+            <div className='flex flex-row justify-center'>{ Array.from({ length: leftTeamX.current }, (_, i) => <span className={xStyle} >X</span>) }</div>
+          </div>
           <h1 className={scoreRoundStyle}>{`Runda Nr. ${questionIndex.current + 1}`}<br/> <i className='font-black'>{roundScore.current}</i></h1>
-          <div className={teamDivStyle}><h1 className={scoreTeamStyle}>{rightTeamName}: <i className='font-black'>{rightTeamScore.current}</i></h1><div className='flex flex-row justify-center'>{ Array.from({ length: rightTeamX.current }, (_, i) => <span className={xStyle} >X</span>) }</div></div>
+          <div className={teamDivStyle}>
+            <h1 className={scoreTeamStyle}>{rightTeamName}: <i className='font-black'>{rightTeamScore.current}</i>{ leftTeamX.current == 2 ? <i className={discussFlagStyle}>sfătuiți-vă!</i> : ""}</h1>
+            <div className='flex flex-row justify-center'>{ Array.from({ length: rightTeamX.current }, (_, i) => <span className={xStyle} >X</span>) }</div>
+          </div>
         </div>
         <div className={questionDivStyle}>
             <h1 className={questionStyle}>{
