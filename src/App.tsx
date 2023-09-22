@@ -5,17 +5,24 @@ import useSound from 'use-sound';
 import buzzerSFX from "../sounds/buzzer.mp3";
 import dingSFX from "../sounds/ding.mp3";
 
-const scoreTeamStyle = 'text-5xl text-center w-1/3'
+const welcomeCardStyle = "text-white self-center card h-5/6 w-5/6 shadow-xl bg-gradient-to-t from-[#00b4d8] to-[#0077b6] transition-all hover:shadow-2xl rounded-3xl p-20 text-center flex flex-col gap-10"
+const startButtonStyle = "btn btn-ghost self-end grow hover:bg-transparent"
+const startButtonFill = "#FFFFFF"
+const welcomeInputStyle = 'input input-lg grow rounded-xl text-center placeholder:text-center font-bold text-[#0066a5]'
+ 
+const scoreDivStyle = 'flex flex-row text-[#02034d]'
+const teamDivStyle = 'flex w-1/3 flex-col gap-2'
+const scoreTeamStyle = 'text-5xl text-center '
 const scoreRoundStyle = 'text-3xl w-1/3 text-center'
-const xStyle = 'font-bold text-red-600'
+const xStyle = 'text-2xl font-bold text-red-600 border-red-600 border-4 rounded-xl m-1 px-2'
 
 const questionDivStyle = 'w-full p-10 flex justify-center items-center'
-const questionStyle = 'text-6xl text-center font-bold'
+const questionStyle = 'text-[#02034d] text-6xl text-center font-bold'
 
 const answerDivStyle = 'flex flex-row gap-20 h-full'
 const answerColumnStyle = 'flex flex-col w-1/2 gap-5'
-const showAnswerStyle = "text-5xl text-center w-full p-5 rounded-2xl shadow-xl grow flex items-center justify-center";
-const hiddenAnswerStyle = "text-5xl font-black text-center w-full p-5 rounded-2xl bg-gray-200 grow flex items-center justify-center";
+const showAnswerStyle = "text-5xl text-[#02034d] text-center w-full p-5 rounded-2xl shadow-2xl shadow-[#90e0ef] grow flex items-center justify-center outline outline-4 outline-[#ffd60a] outline-offset-[-8px] bg-white";
+const hiddenAnswerStyle = "text-5xl text-white font-black text-center w-full p-5 rounded-2xl bg-gradient-to-t from-[#0087b6] to-[#00b4d8] grow flex items-center justify-center";
 
 function App() {
   const [r, refresh] = useState(false);
@@ -173,11 +180,11 @@ function App() {
   
 
   return (
-    <div data-theme="lofi" className="flex h-screen w-screen justify-center items-center">
+    <div data-theme="lofi" className="flex h-screen w-screen justify-center items-center bg-gradient-to-t from-[#caf0f8] ">
       
-      <div className={`self-center card h-5/6 w-5/6 shadow-lg transition-all hover:shadow-2xl rounded-3xl p-20 text-center flex flex-col gap-10 ${hideWelcome ? "hidden" : ""}`} >
-        <button className='btn btn-ghost self-end grow hover:bg-transparent' onClick={setGameUp}>
-          <svg fill="#666666" height="20px" width="20px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460.775 460.775">
+      <div className={`${welcomeCardStyle} ${hideWelcome ? "hidden" : ""}`} >
+        <button className={startButtonStyle} onClick={setGameUp}>
+          <svg fill={startButtonFill} height="20px" width="20px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460.775 460.775">
           <path d="M285.08,230.397L456.218,59.27c6.076-6.077,6.076-15.911,0-21.986L423.511,4.565c-2.913-2.911-6.866-4.55-10.992-4.55
             c-4.127,0-8.08,1.639-10.993,4.55l-171.138,171.14L59.25,4.565c-2.913-2.911-6.866-4.55-10.993-4.55
             c-4.126,0-8.08,1.639-10.992,4.55L4.558,37.284c-6.077,6.075-6.077,15.909,0,21.986l171.138,171.128L4.575,401.505
@@ -188,16 +195,16 @@ function App() {
         <h1 className='text-8xl grow text-center'>Welcome to<br/><i className='font-black'>Young Adult Feud!</i></h1>
         <p className='text-2xl'>Please enter your names:</p>
         <div className='flex flex-row gap-10'>
-          <input className='input input-lg grow' type="text" placeholder='Left Team' value={leftTeamName} onChange={(e) => {setLeftTeamName(e.target.value)}}/>
-          <input className='input input-lg grow' type="text" placeholder='Right Team'value={rightTeamName} onChange={(e) => {setRightTeamName(e.target.value)}}/>
+          <input className={welcomeInputStyle} type="text" placeholder='Left Team' value={leftTeamName} onChange={(e) => {setLeftTeamName(e.target.value)}}/>
+          <input className={welcomeInputStyle} type="text" placeholder='Right Team'value={rightTeamName} onChange={(e) => {setRightTeamName(e.target.value)}}/>
         </div>
       </div>
 
-      <div className={`self-center w-full h-full transition-all p-10 text-center flex flex-col gap-10 ${hideWelcome && !showWinner.current ? "" : "hidden"}`}>
-        <div className='flex flex-row'>
-          <h1 className={scoreTeamStyle}>{leftTeamName}: <i className='font-black'>{leftTeamScore.current}</i><br/><p className={xStyle} >{"X".repeat(leftTeamX.current)}</p></h1>
+      <div className={`self-center w-full h-full transition-all p-10 text-center flex flex-col gap-4 ${hideWelcome && !showWinner.current ? "" : "hidden"}`}>
+        <div className={scoreDivStyle}>
+          <div className={teamDivStyle}><h1 className={scoreTeamStyle}>{leftTeamName}: <i className='font-black'>{leftTeamScore.current}</i></h1><div className='flex flex-row justify-center'>{ Array.from({ length: leftTeamX.current }, (_, i) => <span className={xStyle} >X</span>) }</div></div>
           <h1 className={scoreRoundStyle}>{`Runda Nr. ${questionIndex.current + 1}`}<br/> <i className='font-black'>{roundScore.current}</i></h1>
-          <h1 className={scoreTeamStyle}>{rightTeamName}: <i className='font-black'>{rightTeamScore.current}</i><br/><p className={xStyle}>{"X".repeat(rightTeamX.current)}</p></h1>
+          <div className={teamDivStyle}><h1 className={scoreTeamStyle}>{rightTeamName}: <i className='font-black'>{rightTeamScore.current}</i></h1><div className='flex flex-row justify-center'>{ Array.from({ length: rightTeamX.current }, (_, i) => <span className={xStyle} >X</span>) }</div></div>
         </div>
         <div className={questionDivStyle}>
             <h1 className={questionStyle}>{
