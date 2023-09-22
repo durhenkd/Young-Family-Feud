@@ -4,6 +4,7 @@ import { get_game } from './data';
 import useSound from 'use-sound';
 import buzzerSFX from "../sounds/buzzer.mp3";
 import dingSFX from "../sounds/ding.mp3";
+import winnerSFX from "../sounds/winner.mp3";
 
 const welcomeCardStyle = "text-white self-center card h-5/6 w-5/6 shadow-xl bg-gradient-to-t from-[#00b4d8] to-[#0077b6] transition-all hover:shadow-2xl rounded-3xl p-20 text-center flex flex-col gap-10"
 const startButtonStyle = "btn btn-ghost self-end grow hover:bg-transparent"
@@ -56,6 +57,7 @@ function App() {
 
   const [playBuzzer] = useSound(buzzerSFX);
   const [playDing] = useSound(dingSFX);
+  const [playWinner] = useSound(winnerSFX);
 
   const questions = get_game();
 
@@ -119,6 +121,7 @@ function App() {
 
     if( questionIndex.current + 1 == questions.length) {
       showWinner.current = true;
+      playWinner();
       return;
     }
 
